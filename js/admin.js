@@ -408,6 +408,10 @@
   // إن عُدِّلت البيانات من نافذة أخرى
   Store.onChange(d => { D = d; if (!$("app").hidden) render(); });
 
+  /* ---------- الإصدار و 3 ضغطات على INCUBE لإعادة التحميل الكاملة ---------- */
+  $("ver").textContent = "برمجيات QB · الإصدار " + PWA.version("ar");
+  PWA.taps($("tapBrand"), { 3: () => { toast("جارٍ مسح الكاش وإعادة تحميل الملفات…"); PWA.hardReload(); } });
+
   /* ---------- الدخول ---------- */
   function unlocked() { try { return sessionStorage.getItem(SS) === "1"; } catch (e) { return false; } }
   function enter() { $("lock").hidden = true; $("app").hidden = false; render(); }

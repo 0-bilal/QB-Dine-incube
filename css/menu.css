@@ -57,7 +57,7 @@ img{max-width:100%}
 .promo .bottom.empty{border-top-color:transparent}
 .promo .price{font-size:84px;letter-spacing:0;line-height:1;white-space:nowrap}
 .promo .price small{font-size:22px;letter-spacing:.2em;margin-inline-start:10px}
-.wordmark{position:absolute;top:44px;left:48px;font-family:var(--mono);font-weight:700;font-size:30px;letter-spacing:.12em;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35);z-index:6}
+.wordmark{position:absolute;top:28px;left:32px;padding:16px;cursor:pointer;font-family:var(--mono);font-weight:700;font-size:30px;letter-spacing:.12em;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.35);z-index:6}
 
 /* ---------- المنيو ---------- */
 .menu{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding:48px 72px 40px;font-family:var(--mono);border-left:1px solid var(--rule)}
@@ -127,7 +127,9 @@ img{max-width:100%}
 .foot{display:grid;grid-template-columns:1fr auto;gap:12px 40px;font-size:15px;letter-spacing:.06em;line-height:1.55}
 [dir=rtl] .foot{font-size:17px;letter-spacing:0}
 .foot .note{grid-column:1/-1;color:var(--muted)}
-.foot .ty{align-self:start;letter-spacing:.14em}
+.foot .ty{align-self:start;letter-spacing:.14em;text-align:end}
+.foot .qb{display:block;margin-top:10px;font-family:var(--mono);font-size:13px;letter-spacing:.12em;color:var(--muted)}
+[dir=rtl] .foot .qb{font-family:var(--ar);letter-spacing:0;font-size:14px}
 .foot .pl{display:block;margin-top:10px}
 .legend{font-size:15px;color:var(--muted);letter-spacing:.08em}
 .empty{margin:auto;color:var(--muted);font-size:22px;text-align:center}
@@ -135,3 +137,29 @@ img{max-width:100%}
 .fade{animation:in .45s ease}
 @keyframes in{from{opacity:0;transform:translateY(8px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* الشعار الصغير أعلى المنيو (عند إخفاء اللوحة الإعلانية أو الشعار) */
+.brandMini{font-family:var(--mono);font-weight:700;font-size:20px;letter-spacing:.14em;padding:12px 10px;cursor:pointer;direction:ltr}
+
+/* إشارة الضغطات */
+.tapnote{position:fixed;top:calc(18px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--ink);color:var(--paper);
+  font-family:var(--ar);font-size:16px;letter-spacing:.1em;padding:10px 20px;pointer-events:none}
+
+/* نافذة رمز دخول المسؤول */
+.pinpop{position:fixed;inset:0;z-index:100;background:rgba(20,20,20,.55);display:grid;place-items:center;padding:16px;font-family:var(--ar)}
+.pinbox{background:var(--paper);border:1.5px solid var(--ink);width:min(360px,100%);padding:26px 26px 18px;display:flex;flex-direction:column;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.3)}
+.pinbox.shake{animation:shake .4s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.pinhead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px dashed var(--rule);padding-bottom:12px;font-size:19px;font-weight:500}
+.pinbrand{font-family:var(--mono);font-weight:700;letter-spacing:.14em;font-size:16px}
+.pinsub{margin:0;color:var(--muted);font-size:15px}
+.pinsub.bad{color:#A3322A}
+.pindots{display:flex;gap:12px;justify-content:center;padding:6px 0}
+.pindots i{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:50%;display:block}
+.pindots i.on{background:var(--ink)}
+.pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pinpad button{font-family:var(--mono);font-size:24px;min-height:58px;background:#fff;border:1.5px solid var(--rule);color:var(--ink);cursor:pointer}
+.pinpad button:active{background:var(--steel)}
+.pinpad .ok{font-family:var(--ar);font-size:17px;background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.pinpad button:focus-visible,.pincancel:focus-visible,.brandMini:focus-visible{outline:3px solid var(--cocoa);outline-offset:2px}
+.pincancel{background:none;border:0;color:var(--muted);font-family:var(--ar);font-size:15px;padding:8px;cursor:pointer}

@@ -5,6 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>INCUBE Control Panel</title>
+<link rel="manifest" href="admin.webmanifest">
+<meta name="theme-color" content="#141414">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="INCUBE Admin">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-admin-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon-admin.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap">
@@ -25,10 +32,10 @@
 
 <div class="app" id="app" hidden>
   <header class="bar">
-    <div class="brand">INCUBE <span>لوحة التحكم</span></div>
+    <div class="brand"><span class="tapbrand" id="tapBrand" title="3 ضغطات: إعادة تحميل كاملة">INCUBE</span> <span class="sub">لوحة التحكم · <span id="ver"></span></span></div>
     <div class="bar-tools">
       <span class="saved" id="saved">كل التعديلات محفوظة على هذا الجهاز</span>
-      <a class="b" href="index.html" target="_blank" rel="noopener">عرض المنيو ↗</a>
+      <a class="b" href="index.html">العودة للمنيو ←</a>
     </div>
   </header>
   <div class="body">
@@ -53,6 +60,8 @@
 <input type="file" id="filePick" accept="image/*" hidden>
 <input type="file" id="jsonPick" accept="application/json,.json" hidden>
 
+<script src="js/version.js"></script>
+<script src="js/pwa.js"></script>
 <script src="js/defaults.js"></script>
 <script src="js/store.js"></script>
 <script src="js/admin.js"></script>

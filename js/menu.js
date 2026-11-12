@@ -90,7 +90,7 @@
       <hr class="dash">
       <div class="foot"><span class="note">${br(t.note)}</span>
         <span>${br(t.tagline)}<span class="pl">${br(t.place)}<br><span dir="ltr">${esc(t.handle)}</span></span></span>
-        <span class="ty">${esc(t.thanks)}</span></div>
+        <span class="ty">${esc(t.thanks)}<span class="qb" dir="${lang === "ar" ? "rtl" : "ltr"}">${lang === "ar" ? "برمجيات QB · الإصدار " : "QB SOFTWARE · v"}${PWA.version(lang)}</span></span></div>
     </div>`;
     sheet.querySelectorAll(".row.ph").forEach(r => {
       const go = () => {
@@ -135,8 +135,12 @@
   function buildSlides() {
     const p = D.promoPanel;
     $("stage").classList.toggle("solo", !panelOn());
-    $("wordmark").textContent = p.brand || "";
+    const brand = p.brand || "INCUBE";
+    $("wordmark").textContent = brand;
     $("wordmark").hidden = !p.showBrand || !p.brand;
+    // إن لم يظهر الشعار في اللوحة الإعلانية نعرضه صغيراً أعلى المنيو (لاستخدام ضغطات المسؤول)
+    $("brandMini").textContent = brand;
+    $("brandMini").hidden = panelOn() && !$("wordmark").hidden;
     $("slides").innerHTML = slides.map((s, i) => {
       if (s.type === "text") {
         const hasBottom = s.footer || s.price;
@@ -237,13 +241,63 @@
     }, Math.max(5, +D.settings.idleSeconds || 30) * 1000);
   }
 
-  /* ---------- دخول لوحة التحكم: ضغط مطوّل 3 ثوانٍ على الشعار أو العنوان ---------- */
-  function longPress(el) {
-    let t;
-    el.addEventListener("pointerdown", () => { t = setTimeout(() => { location.href = "admin.html"; }, 3000); });
-    ["pointerup", "pointerleave", "pointercancel"].forEach(ev => el.addEventListener(ev, () => clearTimeout(t)));
+  /* ---------- ضغطات المسؤول على INCUBE ----------
+     3 ضغطات: إعادة تحميل كاملة ومسح الكاش · 5 ضغطات: نافذة رمز الدخول ثم لوحة التحكم */
+  function note(txt, ms = 1600) {
+    const n = $("tapnote");
+    n.textContent = txt; n.hidden = false;
+    clearTimeout(note.t); if (ms) note.t = setTimeout(() => n.hidden = true, ms);
   }
-  longPress($("wordmark")); longPress($("title"));
+  const tapActions = {
+    3: () => { note("جارٍ مسح الكاش وإعادة تحميل الملفات…", 0); PWA.hardReload(); },
+    5: () => { $("tapnote").hidden = true; openPin(); }
+  };
+  const onTap = n => { if (n >= 2) note("•".repeat(n), 900); };
+  PWA.taps($("wordmark"), tapActions, onTap);
+  PWA.taps($("brandMini"), tapActions, onTap);
+
+  /* نافذة رمز الدخول */
+  const UNLOCK = "incube-admin-unlocked";
+  let pin = "", pinT;
+  function goAdmin() { try { sessionStorage.setItem(UNLOCK, "1"); } catch (e) {} location.href = "admin.html"; }
+  function openPin() {
+    if (!String(D.settings.pin || "")) { goAdmin(); return; }
+    pin = ""; drawPin(); $("pinMsg").textContent = "أدخل رمز الدخول لفتح لوحة التحكم";
+    $("pinMsg").classList.remove("bad");
+    $("pinpop").hidden = false;
+    armPinTimeout();
+  }
+  function closePin() { $("pinpop").hidden = true; pin = ""; clearTimeout(pinT); }
+  function armPinTimeout() { clearTimeout(pinT); pinT = setTimeout(closePin, 30000); }
+  function drawPin() {
+    const len = Math.max(4, String(D.settings.pin || "").length, pin.length);
+    $("pinDots").innerHTML = Array.from({ length: len }, (_, i) => `<i class="${i < pin.length ? "on" : ""}"></i>`).join("");
+  }
+  function submitPin() {
+    if (pin === String(D.settings.pin)) { closePin(); goAdmin(); return; }
+    pin = ""; drawPin();
+    const m = $("pinMsg"); m.textContent = "الرمز غير صحيح، حاول مرة أخرى"; m.classList.add("bad");
+    const box = document.querySelector(".pinbox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+  }
+  $("pinPad").addEventListener("click", e => {
+    const b = e.target.closest("button[data-k]"); if (!b) return;
+    armPinTimeout();
+    const k = b.dataset.k;
+    if (k === "del") pin = pin.slice(0, -1);
+    else if (k === "ok") return submitPin();
+    else if (pin.length < 12) pin += k;
+    drawPin();
+    if (pin.length && pin.length === String(D.settings.pin).length) setTimeout(submitPin, 120);
+  });
+  $("pinCancel").onclick = closePin;
+  $("pinpop").addEventListener("click", e => { if (e.target === $("pinpop")) closePin(); });
+  document.addEventListener("keydown", e => {
+    if ($("pinpop").hidden) return;
+    if (/^\d$/.test(e.key)) { pin += e.key; drawPin(); armPinTimeout(); if (pin.length === String(D.settings.pin).length) setTimeout(submitPin, 120); }
+    else if (e.key === "Backspace") { pin = pin.slice(0, -1); drawPin(); }
+    else if (e.key === "Enter") submitPin();
+    else if (e.key === "Escape") closePin();
+  });
   document.addEventListener("contextmenu", e => e.preventDefault());
 
   /* ---------- إبقاء الشاشة مضاءة إن أمكن ---------- */
