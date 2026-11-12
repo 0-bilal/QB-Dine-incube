@@ -8,6 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="INCUBE Menu">
 <title>INCUBE Menu</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#141414">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;700&display=swap">
@@ -26,6 +30,7 @@
     <div class="top">
       <h1 class="title" id="title"></h1>
       <div class="tools">
+        <span class="brandMini" id="brandMini" hidden></span>
         <span class="auto" id="auto"><b></b><span id="autoTxt"></span></span>
         <button class="btn" id="lang" type="button">EN</button>
       </div>
@@ -35,6 +40,25 @@
   </section>
 </div></div>
 
+<!-- نافذة رمز دخول المسؤول (تظهر بعد 5 ضغطات على INCUBE) -->
+<div class="pinpop" id="pinpop" hidden dir="rtl">
+  <div class="pinbox" role="dialog" aria-modal="true" aria-labelledby="pinTitle">
+    <div class="pinhead"><span class="pinbrand">INCUBE</span><span id="pinTitle">دخول المسؤول</span></div>
+    <p class="pinsub" id="pinMsg">أدخل رمز الدخول لفتح لوحة التحكم</p>
+    <div class="pindots" id="pinDots" dir="ltr"></div>
+    <div class="pinpad" id="pinPad" dir="ltr">
+      <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+      <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+      <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+      <button type="button" data-k="del" aria-label="حذف">⌫</button><button type="button" data-k="0">0</button><button type="button" data-k="ok" class="ok">دخول</button>
+    </div>
+    <button type="button" class="pincancel" id="pinCancel">إلغاء</button>
+  </div>
+</div>
+<div class="tapnote" id="tapnote" hidden></div>
+
+<script src="js/version.js"></script>
+<script src="js/pwa.js"></script>
 <script src="js/defaults.js"></script>
 <script src="js/store.js"></script>
 <script src="js/menu.js"></script>

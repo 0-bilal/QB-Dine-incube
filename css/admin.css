@@ -20,7 +20,8 @@ img{max-width:100%}
 button,input,select,textarea{font:inherit;color:inherit}
 
 .brand{font-family:var(--mono);font-weight:700;letter-spacing:.14em;font-size:20px;direction:ltr}
-.brand span{font-family:var(--ar);font-weight:400;letter-spacing:0;font-size:16px;color:var(--muted);margin-inline-start:10px}
+.tapbrand{cursor:pointer;padding:6px 0}
+.brand .sub{font-family:var(--ar);font-weight:400;letter-spacing:0;font-size:16px;color:var(--muted);margin-inline-start:10px}
 
 /* أزرار */
 .b{display:inline-flex;align-items:center;gap:6px;justify-content:center;background:var(--paper);border:1.5px solid var(--ink);padding:9px 16px;cursor:pointer;text-decoration:none;color:var(--ink);font-size:15px;min-height:42px;white-space:nowrap}
